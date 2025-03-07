@@ -154,7 +154,7 @@ $crew_members = $conn->query("SELECT crew_id, name, role FROM crew")->fetch_all(
             </div>
             <button type="submit" name="delete_crew"
                 class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out">
-                Delete Assignmed Crew
+                Delete Assigned Crew
             </button>
         </form>
         <div class="mt-8 mb-8 inline-block mx-auto">
