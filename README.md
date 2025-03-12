@@ -1,6 +1,6 @@
 Group Name: The Radicals
 
-Project Name: Flight Management System for Airlines
+Project Name: Airline Flight Management System 
 
 Group Members:
 1. Zannatul Ferdous 2222722042
