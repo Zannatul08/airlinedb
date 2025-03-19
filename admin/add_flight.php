@@ -5,6 +5,77 @@ require_once '../db_connection.php'; // Include the Singleton
 $db = Database::getInstance();
 $conn = $db->getConnection();
 
+// Factory Pattern for Flight Operations
+interface FlightOperation {
+    public function execute();
+}
+
+class AddFlight implements FlightOperation {
+    private $conn;
+    private $flightData;
+
+    public function __construct($conn, $flightData) {
+        $this->conn = $conn;
+        $this->flightData = $flightData;
+    }
+
+    public function execute() {
+        $flight_number = $this->flightData['flight_number'];
+        $departure_time = $this->flightData['departure_time'];
+        $arrival_time = $this->flightData['arrival_time'];
+        $status = $this->flightData['status'];
+        $route_id = $this->flightData['route_id'];
+        $airplane_id = $this->flightData['airplane_id'];
+
+        if (empty($airplane_id)) {
+            return "Error: Airplane ID is required.";
+        } else {
+            $insertQuery = "INSERT INTO flight (flight_number, departure_time, arrival_time, status, route_id, airplane_id) VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($insertQuery);
+            $stmt->bind_param("ssssii", $flight_number, $departure_time, $arrival_time, $status, $route_id, $airplane_id);
+            if ($stmt->execute()) {
+                return "<script>alert('Flight added successfully!');</script>";
+            } else {
+                return "Error: " . $stmt->error;
+            }
+        }
+    }
+}
+
+class DeleteFlight implements FlightOperation {
+    private $conn;
+    private $flightNumber;
+
+    public function __construct($conn, $flightNumber) {
+        $this->conn = $conn;
+        $this->flightNumber = $flightNumber;
+    }
+
+    public function execute() {
+        $deleteQuery = "DELETE FROM flight WHERE flight_number = ?";
+        $stmt = $this->conn->prepare($deleteQuery);
+        $stmt->bind_param("s", $this->flightNumber);
+        if ($stmt->execute()) {
+            return "<script>alert('Flight deleted successfully!');</script>";
+        } else {
+            return "Error: " . $stmt->error;
+        }
+    }
+}
+
+class FlightOperationFactory {
+    public static function createOperation($conn, $type, $data) {
+        switch ($type) {
+            case 'add':
+                return new AddFlight($conn, $data);
+            case 'delete':
+                return new DeleteFlight($conn, $data);
+            default:
+                throw new InvalidArgumentException("Invalid operation type: " . $type);
+        }
+    }
+}
+
 // Fetch all airlines
 $query_airlines = "SELECT airline_id, airline_name FROM airline";
 $result_airlines = $conn->query($query_airlines);
@@ -15,9 +86,9 @@ while ($row = $result_airlines->fetch_assoc()) {
 
 // Fetch all routes
 $query_routes = "SELECT route_id, CONCAT(airport1.airport_name, ' to ', airport2.airport_name) AS route_name
-                    FROM route
-                    JOIN airport AS airport1 ON route.origin_airport_id = airport1.airport_id
-                    JOIN airport AS airport2 ON route.destination_airport_id = airport2.airport_id";
+                 FROM route
+                 JOIN airport AS airport1 ON route.origin_airport_id = airport1.airport_id
+                 JOIN airport AS airport2 ON route.destination_airport_id = airport2.airport_id";
 $result_routes = $conn->query($query_routes);
 $routes = [];
 while ($row = $result_routes->fetch_assoc()) {
@@ -34,47 +105,20 @@ while ($row = $result_airplanes->fetch_assoc()) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['delete_flight_number'])) {
-        // Handle delete flight by flight number
         $flight_number = $_POST['delete_flight_number'];
-        $deleteQuery = "DELETE FROM flight WHERE flight_number = ?";
-        $stmt = $conn->prepare($deleteQuery);
-        $stmt->bind_param("s", $flight_number);
-        if ($stmt->execute()) {
-            echo "<script>alert('Flight deleted successfully!');</script>";
-        } else {
-            echo "Error: " . $stmt->error;
-        }
+        $operation = FlightOperationFactory::createOperation($conn, 'delete', $flight_number);
+        echo $operation->execute();
     } elseif (isset($_POST['flight_number'])) {
-        // Handle add flight
-        $flight_number = $_POST['flight_number'];
-        $departure_time = $_POST['departure_time'];
-        $arrival_time = $_POST['arrival_time'];
-        $status = $_POST['status'];
-        $route_id = $_POST['route_id'];
-        // $airline_id = $_POST['airline_id']; // Removed
-
-        $airplane_id = $_POST['airplane_id'];
-
-        if (empty($airplane_id)) {
-            echo "Error: Airplane ID is required.";
-        } else {
-            $insertQuery = "INSERT INTO flight (flight_number, departure_time, arrival_time, status, route_id, airplane_id)
-                                VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($insertQuery);
-            $stmt->bind_param("ssssii",
-                $flight_number,
-                $departure_time,
-                $arrival_time,
-                $status,
-                $route_id,
-                $airplane_id
-            );
-            if ($stmt->execute()) {
-                echo "<script>alert('Flight added successfully!');</script>";
-            } else {
-                echo "Error: " . $stmt->error;
-            }
-        }
+        $flightData = [
+            'flight_number' => $_POST['flight_number'],
+            'departure_time' => $_POST['departure_time'],
+            'arrival_time' => $_POST['arrival_time'],
+            'status' => $_POST['status'],
+            'route_id' => $_POST['route_id'],
+            'airplane_id' => $_POST['airplane_id']
+        ];
+        $operation = FlightOperationFactory::createOperation($conn, 'add', $flightData);
+        echo $operation->execute();
     }
 }
 ?>
