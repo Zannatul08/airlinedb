@@ -26,13 +26,14 @@ class AddFlight implements FlightOperation {
         $status = $this->flightData['status'];
         $route_id = $this->flightData['route_id'];
         $airplane_id = $this->flightData['airplane_id'];
+        $price = $this->flightData['price']; // Add price
 
         if (empty($airplane_id)) {
             return "Error: Airplane ID is required.";
         } else {
-            $insertQuery = "INSERT INTO flight (flight_number, departure_time, arrival_time, status, route_id, airplane_id) VALUES (?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO flight (flight_number, departure_time, arrival_time, status, route_id, airplane_id, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insertQuery);
-            $stmt->bind_param("ssssii", $flight_number, $departure_time, $arrival_time, $status, $route_id, $airplane_id);
+            $stmt->bind_param("sssssid", $flight_number, $departure_time, $arrival_time, $status, $route_id, $airplane_id, $price);
             if ($stmt->execute()) {
                 return "<script>alert('Flight added successfully!');</script>";
             } else {
@@ -115,7 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'arrival_time' => $_POST['arrival_time'],
             'status' => $_POST['status'],
             'route_id' => $_POST['route_id'],
-            'airplane_id' => $_POST['airplane_id']
+            'airplane_id' => $_POST['airplane_id'],
+            'price' => $_POST['price'] // Add price to flight data
         ];
         $operation = FlightOperationFactory::createOperation($conn, 'add', $flightData);
         echo $operation->execute();
@@ -199,6 +201,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <option value="<?= $airplane['airplane_id']; ?>"><?= $airplane['airplane_model']; ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+
+            <div>
+                <label for="price" class="block text-sm font-medium text-gray-700">Base Price ($)</label>
+                <input type="number" name="price" id="price" step="0.01" min="0" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
             </div>
 
             <button type="submit"
