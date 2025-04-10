@@ -19,7 +19,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 'user') {
 }
 
 $conn = Database::getInstance()->getConnection();
-// ... rest of the file remains unchanged ...
 
 // Initialize variables
 $search = isset($_GET['search']) ? trim($_GET['search']) : null;
