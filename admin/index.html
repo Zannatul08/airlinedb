@@ -31,7 +31,7 @@
 
             <!-- Button Section -->
             <section class="flex justify-center space-x-6 mt-6 font-semibold">
-                <button onclick="window.location.href='user.php'" 
+                <button onclick="window.location.href='user_login.php'" 
                         class="px-6 py-3 bg-green-500 text-white text-lg rounded-lg shadow hover:bg-green-600 transition">
                     User
                 </button>
@@ -42,12 +42,20 @@
                 </button>
             </section>
 
-            <!-- Admin Registration Link -->
-            <section class="text-center mt-6">
-                <a href="register_admin.php"
-                   class="text-blue-600 hover:underline text-lg font-semibold">
-                   Admin? Register here
-                </a>
+            <!-- Registration Links -->
+            <section class="text-center mt-6 space-y-2">
+                <div>
+                    <a href="register_user.php"
+                       class="text-green-600 hover:underline text-lg font-semibold">
+                       User? Register here
+                    </a>
+                </div>
+                <div>
+                    <a href="register_admin.php"
+                       class="text-blue-600 hover:underline text-lg font-semibold">
+                       Admin? Register here
+                    </a>
+                </div>
             </section>
         </main>
 
@@ -60,6 +68,6 @@
             </p>
         </section>
     </div>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92e2d2f50c26c006',t:'MTc0NDI5NDE4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
 </html>
