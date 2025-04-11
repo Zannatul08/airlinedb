@@ -64,16 +64,44 @@ class DeleteFlight implements FlightOperation {
     }
 }
 
-class FlightOperationFactory {
-    public static function createOperation($conn, $type, $data) {
-        switch ($type) {
-            case 'add':
-                return new AddFlight($conn, $data);
-            case 'delete':
-                return new DeleteFlight($conn, $data);
-            default:
-                throw new InvalidArgumentException("Invalid operation type: " . $type);
-        }
+// class FlightOperationFactory {
+//     public static function createOperation($conn, $type, $data) {
+//         switch ($type) {
+//             case 'add':
+//                 return new AddFlight($conn, $data);
+//             case 'delete':
+//                 return new DeleteFlight($conn, $data);
+//             default:
+//                 throw new InvalidArgumentException("Invalid operation type: " . $type);
+//         }
+//     }
+// }
+
+abstract class FlightOperationCreator {
+    protected $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    abstract public function createOperation($data): FlightOperation;
+
+    public function performOperation($data) {
+        $operation = $this->createOperation($data);
+        return $operation->execute();
+    }
+}
+
+// Concrete Creators
+class AddFlightCreator extends FlightOperationCreator {
+    public function createOperation($data): FlightOperation {
+        return new AddFlight($this->conn, $data);
+    }
+}
+
+class DeleteFlightCreator extends FlightOperationCreator {
+    public function createOperation($data): FlightOperation {
+        return new DeleteFlight($this->conn, $data);
     }
 }
 
@@ -106,9 +134,9 @@ while ($row = $result_airplanes->fetch_assoc()) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['delete_flight_number'])) {
-        $flight_number = $_POST['delete_flight_number'];
-        $operation = FlightOperationFactory::createOperation($conn, 'delete', $flight_number);
-        echo $operation->execute();
+        $creator = new DeleteFlightCreator($conn);
+        $result = $creator->performOperation($_POST['delete_flight_number']);
+        echo $result;
     } elseif (isset($_POST['flight_number'])) {
         $flightData = [
             'flight_number' => $_POST['flight_number'],
@@ -117,10 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'status' => $_POST['status'],
             'route_id' => $_POST['route_id'],
             'airplane_id' => $_POST['airplane_id'],
-            'price' => $_POST['price'] // Add price to flight data
+            'price' => $_POST['price']
         ];
-        $operation = FlightOperationFactory::createOperation($conn, 'add', $flightData);
-        echo $operation->execute();
+        $creator = new AddFlightCreator($conn);
+        $result = $creator->performOperation($flightData);
+        echo $result;
     }
 }
 ?>
