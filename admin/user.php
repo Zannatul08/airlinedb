@@ -202,14 +202,14 @@ while ($row = $notifResult->fetch_assoc()) {
                                 <td class='py-3 px-4'>$" . number_format($basePrice, 2) . "</td>
                                 <td class='py-3 px-4'>
                                     <button onclick=\"document.getElementById('book-form-{$row['flight_id']}').style.display='block'\" 
-                                            class='px-9 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition '>
+                                            class='px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition'>
                                         Book Ticket
                                     </button>
                                     <form action='user.php' method='POST' class='inline'>
                                         <input type='hidden' name='flight_id' value='{$row['flight_id']}'>
                                         <button type='submit' name='subscribe_flight' 
-                                                class='px-3 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition mt-2 flex flex-grow'>
-                                            Subscribe to get Updates
+                                                class='px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition'>
+                                            Subscribe to Updates
                                         </button>
                                     </form>
                                     <div id='book-form-{$row['flight_id']}' style='display:none;' class='mt-2 p-4 bg-gray-100 rounded-lg'>

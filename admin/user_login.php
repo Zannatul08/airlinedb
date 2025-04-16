@@ -1,10 +1,19 @@
 <?php
 session_start();
 require_once '../db_connection.php';
-
 // Get the database connection instance
 $db = Database::getInstance();
 $conn = $db->getConnection();
+
+require_once 'PassportProxy.php';
+$passportProxy = new PassportProxy($conn);
+
+$passport_number = $_POST['passport_number'] ?? '';
+
+if ($passportProxy->isBanned($passport_number)) {
+    die("<p style='color:red;'>❌ Login denied. Your passport number is banned.</p>");
+}
+
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -60,15 +69,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form method="POST" action="user_login.php" class="space-y-6">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-600">Username:</label>
-                    <input type="text" id="username" name="username" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    <input type="text" id="username" name="username" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
                 </div>
 
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-600">Password:</label>
-                    <input type="password" id="password" name="password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
                 </div>
 
-                <button type="submit" class="w-full py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">Login</button>
+                <button type="submit"
+                    class="w-full py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">Login</button>
             </form>
 
             <div class="mt-6 text-center">

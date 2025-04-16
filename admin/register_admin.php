@@ -1,10 +1,19 @@
 <?php
 session_start();
-include '../db_connection.php'; 
-
+include '../db_connection.php';
 // Get the database connection instance
 $db = Database::getInstance();
 $conn = $db->getConnection();
+
+require_once 'PassportProxy.php';
+$passportProxy = new PassportProxy($conn);
+
+$passport_number = $_POST['passport_number'] ?? '';
+
+if ($passportProxy->isBanned($passport_number)) {
+    die("<p style='color:red;'> Access denied. You are banned.</p>");
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Collect data from the form
@@ -45,12 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-50 font-sans">
 
     <div class="max-w-md mx-auto mt-12 p-6 bg-white shadow-lg rounded-lg">
@@ -62,12 +73,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form method="POST" action="register_admin.php" class="mt-6">
             <label for="username" class="block text-gray-700">Username:</label>
-            <input type="text" id="username" name="username" required class="w-full p-3 border border-gray-300 rounded-lg mt-2">
+            <input type="text" id="username" name="username" required
+                class="w-full p-3 border border-gray-300 rounded-lg mt-2">
 
             <label for="password" class="block text-gray-700 mt-4">Password:</label>
-            <input type="password" id="password" name="password" required class="w-full p-3 border border-gray-300 rounded-lg mt-2">
+            <input type="password" id="password" name="password" required
+                class="w-full p-3 border border-gray-300 rounded-lg mt-2">
 
-            <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg mt-6 hover:bg-blue-600">Register Admin</button>
+            <label for="password" class="block text-gray-700 mt-4">Passport number</label>
+            <input type="text" name="passport_number" required
+                class="w-full p-3 border border-gray-300 rounded-lg mt-2">
+
+
+            <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg mt-6 hover:bg-blue-600">Register
+                Admin</button>
         </form>
 
         <div class="mt-4 text-center">
@@ -76,4 +95,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
 </body>
+
 </html>

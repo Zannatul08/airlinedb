@@ -26,15 +26,14 @@ class AddFlight implements FlightOperation {
         $status = $this->flightData['status'];
         $route_id = $this->flightData['route_id'];
         $airplane_id = $this->flightData['airplane_id'];
-        $price = $this->flightData['price'];
-        $gate_number = $this->flightData['gate_number'];
+        $price = $this->flightData['price']; // Add price
 
         if (empty($airplane_id)) {
             return "Error: Airplane ID is required.";
         } else {
-            $insertQuery = "INSERT INTO flight (flight_number, departure_time, arrival_time, status, route_id, airplane_id, price, gate_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO flight (flight_number, departure_time, arrival_time, status, route_id, airplane_id, price) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($insertQuery);
-            $stmt->bind_param("sssssids", $flight_number, $departure_time, $arrival_time, $status, $route_id, $airplane_id, $price, $gate_number);
+            $stmt->bind_param("sssssid", $flight_number, $departure_time, $arrival_time, $status, $route_id, $airplane_id, $price);
             if ($stmt->execute()) {
                 return "<script>alert('Flight added successfully!');</script>";
             } else {
@@ -65,31 +64,16 @@ class DeleteFlight implements FlightOperation {
     }
 }
 
-abstract class FlightOperationCreator {
-    protected $conn;
-
-    public function __construct($conn) {
-        $this->conn = $conn;
-    }
-
-    abstract public function createOperation($data): FlightOperation;
-
-    public function performOperation($data) {
-        $operation = $this->createOperation($data);
-        return $operation->execute();
-    }
-}
-
-// Concrete Creators
-class AddFlightCreator extends FlightOperationCreator {
-    public function createOperation($data): FlightOperation {
-        return new AddFlight($this->conn, $data);
-    }
-}
-
-class DeleteFlightCreator extends FlightOperationCreator {
-    public function createOperation($data): FlightOperation {
-        return new DeleteFlight($this->conn, $data);
+class FlightOperationFactory {
+    public static function createOperation($conn, $type, $data) {
+        switch ($type) {
+            case 'add':
+                return new AddFlight($conn, $data);
+            case 'delete':
+                return new DeleteFlight($conn, $data);
+            default:
+                throw new InvalidArgumentException("Invalid operation type: " . $type);
+        }
     }
 }
 
@@ -122,9 +106,9 @@ while ($row = $result_airplanes->fetch_assoc()) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['delete_flight_number'])) {
-        $creator = new DeleteFlightCreator($conn);
-        $result = $creator->performOperation($_POST['delete_flight_number']);
-        echo $result;
+        $flight_number = $_POST['delete_flight_number'];
+        $operation = FlightOperationFactory::createOperation($conn, 'delete', $flight_number);
+        echo $operation->execute();
     } elseif (isset($_POST['flight_number'])) {
         $flightData = [
             'flight_number' => $_POST['flight_number'],
@@ -133,12 +117,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'status' => $_POST['status'],
             'route_id' => $_POST['route_id'],
             'airplane_id' => $_POST['airplane_id'],
-            'price' => $_POST['price'],
-            'gate_number' => $_POST['gate_number']
+            'price' => $_POST['price'] // Add price to flight data
         ];
-        $creator = new AddFlightCreator($conn);
-        $result = $creator->performOperation($flightData);
-        echo $result;
+        $operation = FlightOperationFactory::createOperation($conn, 'add', $flightData);
+        echo $operation->execute();
     }
 }
 ?>
@@ -227,12 +209,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
             </div>
 
-            <div>
-                <label for="gate_number" class="block text-sm font-medium text-gray-700">Gate Number</label>
-                <input type="text" name="gate_number" id="gate_number" required
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-            </div>
-
             <button type="submit"
                 class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out">
                 Add Flight
@@ -255,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </button>
         </form>
         <div class="mt-8 mb-8 inline-block mx-auto">
-            <a href="../admin/index.html"
+            <a href="../admin//index.html"
                 class="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition">Back to Home</a>
         </div>
     </div>
