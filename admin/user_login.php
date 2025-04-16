@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../db_connection.php';
+
 // Get the database connection instance
 $db = Database::getInstance();
 $conn = $db->getConnection();
@@ -11,7 +12,7 @@ $passportProxy = new PassportProxy($conn);
 $passport_number = $_POST['passport_number'] ?? '';
 
 if ($passportProxy->isBanned($passport_number)) {
-    die("<p style='color:red;'>❌ Login denied. Your passport number is banned.</p>");
+    die("<p style='color:red;'>Login denied. Your passport number is banned.</p>");
 }
 
 

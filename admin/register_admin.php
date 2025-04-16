@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db_connection.php';
+
 // Get the database connection instance
 $db = Database::getInstance();
 $conn = $db->getConnection();
@@ -13,7 +14,6 @@ $passport_number = $_POST['passport_number'] ?? '';
 if ($passportProxy->isBanned($passport_number)) {
     die("<p style='color:red;'> Access denied. You are banned.</p>");
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Collect data from the form
@@ -80,10 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="password" id="password" name="password" required
                 class="w-full p-3 border border-gray-300 rounded-lg mt-2">
 
-            <label for="password" class="block text-gray-700 mt-4">Passport number</label>
+            <label for="passport_number" class="block text-gray-700 mt-4">Passport number</label>
             <input type="text" name="passport_number" required
                 class="w-full p-3 border border-gray-300 rounded-lg mt-2">
-
 
             <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-lg mt-6 hover:bg-blue-600">Register
                 Admin</button>

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2025 at 08:44 PM
+-- Generation Time: Apr 10, 2025 at 08:36 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,16 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`, `role`) VALUES
-(13, 'mosta', '$2y$10$jM22eeCra2tWfKP7kWi2ueKwEsh7753TZAA8/6qJw14oxybUC7CbW', 'admin');
+(1, 'Moontaha Rawshan', '$2y$10$GKtXVHpzT6.AJXWyGc.JOOtzVhM9s19etq318.fpqo.bw5Sstsxb.', 'admin'),
+(2, 'Raiyan', '$2y$10$8sGSD9mIUlxzqka7qrgOquq1JDkwFv0KACa/wEEMsUvslDija5wCS', 'admin'),
+(3, 'mrm', '$2y$10$XufCyShrtE.MtJAUpOqLi.bzS017.5MhfENLfJKTyUVHqd6dUWocC', 'admin'),
+(4, 'xRae04', '$2y$10$w9ssJTEY2s35mq7XZzofj.GYYx/YTgIGe46sQxs2PqGRNQvYfjCwK', 'admin'),
+(5, 'Sheikh Hasina', '$2y$10$XOK.Gdoz3B9VEF8b4OGHSeSGJ2xV0ccXmlnKFctcTH0Oy6vJeyfkW', 'admin'),
+(6, 'Raiyan Khan', '$2y$10$RXTERIV6qleaxyO5LLlHMOoUjUDkU9TAOnoVgJM4KXRiBNMsymdMG', 'admin'),
+(7, 'aha_tomater', '$2y$10$Lb.q/Q5j9pSbllxVs7KVYuAVWz7E3y2c.OVFYRyt5o/1L57BETSXS', 'admin'),
+(8, 'Ayman Khan', '$2y$10$Lf.0xHZQYEA5gJQEVHys4.eyTeECeUkag1u4QLQq4rxAcG.hVyXpu', 'admin'),
+(9, 'arnab', '$2y$10$C4MLhJIADCxEXyHEuHAeEubycI8Rk5lpoY3CkjejPZ6ZNVPVbr22S', 'admin'),
+(10, 'jannatul', '$2y$10$JWt5Q4PYNqb/O8voiLpRfOf68S0PNNv.vZA7EcQ06.GUpc2kpoF5O', 'admin');
 
 -- --------------------------------------------------------
 
@@ -114,9 +123,7 @@ INSERT INTO `airport` (`airport_id`, `airport_name`, `city`, `country`, `IATA_co
 (4, 'Los Angeles International Airport', 'Los Angeles', 'USA', 'LAX'),
 (5, 'Indira Gandhi International Airport', 'Delhi', 'India', 'DEL'),
 (6, 'Frankfurt Airport', 'Frankfurt', 'Germany', 'FRA'),
-(7, 'Chittagong Airport', 'Chittagong', 'Bangladesh', '102'),
-(8, 'Patenga Airport', 'Chittagong', 'Bangladesh', 'PAC'),
-(9, 'Bangkok International', 'Bangkok', 'Thailand', 'BIT');
+(7, 'Chittagong Airport', 'Chittagong', 'Bangladesh', '102');
 
 -- --------------------------------------------------------
 
@@ -143,8 +150,7 @@ INSERT INTO `airport_maintenance` (`maintenance_id`, `airport_id`, `service_type
 (3, 2, '', '2024-11-23 10:00:00', '2024-11-23 18:00:00', 'In Progress'),
 (4, 3, '', '2024-11-24 06:00:00', '2024-11-24 10:00:00', 'Scheduled'),
 (5, 4, '', '2024-11-25 09:00:00', '2024-11-25 14:00:00', 'Scheduled'),
-(6, 1, '', '2024-11-26 13:00:00', '2024-11-26 17:00:00', 'In Progress'),
-(7, 6, '', '2025-04-14 00:02:00', '2025-04-15 00:02:00', 'In Progress');
+(6, 1, '', '2024-11-26 13:00:00', '2024-11-26 17:00:00', 'In Progress');
 
 -- --------------------------------------------------------
 
@@ -167,27 +173,7 @@ CREATE TABLE `airport_security` (
 --
 
 INSERT INTO `airport_security` (`security_id`, `airport_id`, `security_type`, `staff_count`, `status`, `last_inspection_date`, `next_inspection_date`) VALUES
-(1, 2, 'Perimeter Security', 12, 'Active', '2024-11-21', '2024-11-22'),
-(2, 3, 'Surveillance', 13, 'Inactive', '2025-04-13', '2025-04-29');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `banned_passports`
---
-
-CREATE TABLE `banned_passports` (
-  `id` int(11) NOT NULL,
-  `passport_number` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `banned_passports`
---
-
-INSERT INTO `banned_passports` (`id`, `passport_number`) VALUES
-(1, '123456'),
-(2, '1234567');
+(1, 2, 'Perimeter Security', 12, 'Active', '2024-11-21', '2024-11-22');
 
 -- --------------------------------------------------------
 
@@ -233,8 +219,7 @@ INSERT INTO `crew` (`crew_id`, `name`, `date_of_birth`, `role`) VALUES
 (12, 'Sarah Lee', '1992-09-25', 'Flight Attendant'),
 (13, 'Mark Smith', '1987-04-05', 'Flight Attendant'),
 (14, 'Emma Watson', '1993-01-12', 'Co-Pilot'),
-(15, 'James Brown', '1980-07-18', 'Pilot'),
-(16, 'Silvie', '0000-00-00', 'Co-Pilot');
+(15, 'James Brown', '1980-07-18', 'Pilot');
 
 -- --------------------------------------------------------
 
@@ -249,6 +234,27 @@ CREATE TABLE `crew_assignment` (
   `shift_start` datetime NOT NULL,
   `shift_end` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `crew_assignment`
+--
+
+INSERT INTO `crew_assignment` (`schedule_id`, `flight_id`, `crew_id`, `shift_start`, `shift_end`) VALUES
+(1, 1, 1, '2024-11-22 06:00:00', '2024-11-22 12:00:00'),
+(2, 1, 11, '2024-11-22 06:00:00', '2024-11-22 12:00:00'),
+(3, 1, 12, '2024-11-22 06:00:00', '2024-11-22 12:00:00'),
+(4, 2, 3, '2024-11-22 12:00:00', '2024-11-22 18:00:00'),
+(5, 2, 14, '2024-11-22 12:00:00', '2024-11-22 18:00:00'),
+(6, 2, 13, '2024-11-22 12:00:00', '2024-11-22 18:00:00'),
+(7, 3, 10, '2024-11-23 04:00:00', '2024-11-23 10:00:00'),
+(8, 3, 14, '2024-11-23 04:00:00', '2024-11-23 10:00:00'),
+(9, 3, 13, '2024-11-23 04:00:00', '2024-11-23 10:00:00'),
+(10, 10, 15, '2024-11-16 06:41:00', '2024-11-16 20:41:00'),
+(11, 10, 11, '2024-11-16 06:41:00', '2024-11-16 20:41:00'),
+(12, 10, 12, '2024-11-16 06:41:00', '2024-11-16 20:41:00'),
+(13, 12, 1, '2024-11-16 18:48:00', '2024-11-17 08:48:00'),
+(14, 12, 14, '2024-11-16 18:48:00', '2024-11-17 08:48:00'),
+(15, 12, 13, '2024-11-16 18:48:00', '2024-11-17 08:48:00');
 
 -- --------------------------------------------------------
 
@@ -273,9 +279,11 @@ CREATE TABLE `flight` (
 --
 
 INSERT INTO `flight` (`flight_id`, `flight_number`, `departure_time`, `arrival_time`, `status`, `route_id`, `airplane_id`, `gate_number`, `price`) VALUES
-(14, 'Mn123', '2025-06-16 23:47:00', '2025-06-17 02:47:00', 'Scheduled', 11, 1, NULL, 330.00),
-(15, 'nyc123', '2025-04-18 23:49:00', '2025-04-19 02:49:00', 'Scheduled', 13, 4, NULL, 450.00),
-(16, 'lnd1123', '2025-04-17 23:50:00', '2025-04-18 02:50:00', 'Delayed', 15, 3, NULL, 500.00);
+(1, 'FL001', '2024-11-22 08:00:00', '2024-11-22 12:00:00', 'Cancelled', 11, 1, 'Gate 1', 150.00),
+(2, 'FL002', '2024-11-22 14:00:00', '2024-11-22 18:00:00', 'Scheduled', 12, 2, 'Gate 2', 200.00),
+(3, 'FL003', '2024-11-23 06:00:00', '2024-11-23 10:00:00', 'Cancelled', 13, 3, 'Gate 30', 180.00),
+(10, '123', '2024-11-16 08:41:00', '2024-11-16 20:41:00', 'Scheduled', 13, 1, 'Gate 4', 250.00),
+(12, '132', '2024-11-16 20:48:00', '2024-11-16 08:48:00', 'Cancelled', 11, 2, 'Gate 10', 220.00);
 
 -- --------------------------------------------------------
 
@@ -301,6 +309,18 @@ CREATE TABLE `flight_observers` (
   `flight_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `flight_observers`
+--
+
+INSERT INTO `flight_observers` (`id`, `user_id`, `flight_id`) VALUES
+(5, 2, 1),
+(3, 2, 2),
+(4, 2, 3),
+(1, 2, 10),
+(2, 2, 12),
+(6, 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -315,6 +335,19 @@ CREATE TABLE `flight_status` (
   `reason` varchar(255) DEFAULT NULL,
   `gate_number` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `flight_status`
+--
+
+INSERT INTO `flight_status` (`status_id`, `flight_id`, `status_update`, `update_time`, `reason`, `gate_number`) VALUES
+(1, 12, 'Cancelled', '2025-04-10 16:49:20', 'Status updated to Cancelled', 'Gate 5'),
+(2, 10, 'Delayed', '2025-04-10 16:49:28', 'Status updated to Delayed', 'Gate 4'),
+(3, 12, 'Cancelled', '2025-04-10 16:49:37', 'Gate number updated to Gate 10', 'Gate 10'),
+(4, 3, 'Cancelled', '2025-04-10 16:59:02', 'Status updated to Cancelled', 'Gate 30'),
+(5, 1, 'Cancelled', '2025-04-10 17:06:30', 'Status updated to Cancelled', 'Gate 1'),
+(6, 1, 'Cancelled', '2025-04-10 17:06:30', 'Status updated to Cancelled', 'Gate 1'),
+(7, 10, 'Scheduled', '2025-04-10 17:06:38', 'Status updated to Scheduled', 'Gate 4');
 
 -- --------------------------------------------------------
 
@@ -341,8 +374,7 @@ INSERT INTO `medical_assistance` (`medical_team_id`, `team_lead`, `service_type`
 (5, 'Moontaha Rawshan', 'First Aid', 'Engaged', 12, 2),
 (6, 'Sheikh Hasina', 'Health Checks', 'Engaged', 40, 1),
 (7, 'Ayman', 'First Aid', 'Available', 5, 1),
-(8, 'Rumman', 'Emergency Response', 'Available', 10, 2),
-(9, 'Razor', 'Health Checks', 'Engaged', 15, 3);
+(8, 'Rumman', 'Emergency Response', 'Available', 10, 2);
 
 -- --------------------------------------------------------
 
@@ -377,8 +409,7 @@ INSERT INTO `route` (`route_id`, `origin_airport_id`, `destination_airport_id`, 
 (11, 1, 2, 4000),
 (12, 2, 3, 13000),
 (13, 3, 4, 6500),
-(14, 6, 1, 200),
-(15, 4, 1, 445);
+(14, 6, 1, 200);
 
 -- --------------------------------------------------------
 
@@ -398,8 +429,7 @@ CREATE TABLE `team_lead` (
 --
 
 INSERT INTO `team_lead` (`team_leader_id`, `medical_team_id`, `start_date`, `end_date`) VALUES
-(1, 8, '2024-11-21', NULL),
-(2, 9, '2025-04-12', NULL);
+(1, 8, '2024-11-21', NULL);
 
 -- --------------------------------------------------------
 
@@ -417,6 +447,15 @@ CREATE TABLE `ticket` (
   `booking_time` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`id`, `user_id`, `flight_id`, `final_price`, `pricing_type`, `discount_applied`, `booking_time`) VALUES
+(1, 2, 10, 191.25, 'economy', 23.50, '2025-04-10 21:34:15'),
+(2, 2, 12, 252.45, 'business', 23.50, '2025-04-10 21:34:23'),
+(3, 3, 2, 229.50, 'business', 23.50, '2025-04-10 23:08:40');
+
 -- --------------------------------------------------------
 
 --
@@ -429,6 +468,16 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` varchar(50) NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
+(1, 'testuser', '$2y$10$XOK.Gdoz3B9VEF8b4OGHSeSGJ2xV0ccXmlnKFctcTH0Oy6vJeyfkW', 'user'),
+(2, 'arnab', '$2y$10$Ap2uH5.JhehohY35HI3NyuyLbn2xX6gIrYVPZjAWa1K/j2E3mwZdC', 'user'),
+(3, 'jannatul', '$2y$10$PxanF87q1tDvMzI/92ceeedyvrYhXrgGBKjfUz5NbeRnJJ038ODzm', 'user'),
+(4, 'user', '$2y$10$oJDYgOkIzdIZSTCAESDmFOOx0yUH530jgNOxle/Z/ycKN5vMER4Q2', 'user');
 
 --
 -- Indexes for dumped tables
@@ -473,13 +522,6 @@ ALTER TABLE `airport_maintenance`
 ALTER TABLE `airport_security`
   ADD PRIMARY KEY (`security_id`),
   ADD KEY `airport_id` (`airport_id`);
-
---
--- Indexes for table `banned_passports`
---
-ALTER TABLE `banned_passports`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `passport_number` (`passport_number`);
 
 --
 -- Indexes for table `co_pilot`
@@ -583,7 +625,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `airline`
@@ -601,31 +643,25 @@ ALTER TABLE `airplane`
 -- AUTO_INCREMENT for table `airport`
 --
 ALTER TABLE `airport`
-  MODIFY `airport_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `airport_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `airport_maintenance`
 --
 ALTER TABLE `airport_maintenance`
-  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `airport_security`
 --
 ALTER TABLE `airport_security`
-  MODIFY `security_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `banned_passports`
---
-ALTER TABLE `banned_passports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `security_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `crew`
 --
 ALTER TABLE `crew`
-  MODIFY `crew_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `crew_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `crew_assignment`
@@ -637,49 +673,49 @@ ALTER TABLE `crew_assignment`
 -- AUTO_INCREMENT for table `flight`
 --
 ALTER TABLE `flight`
-  MODIFY `flight_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `flight_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `flight_observers`
 --
 ALTER TABLE `flight_observers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `flight_status`
 --
 ALTER TABLE `flight_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `medical_assistance`
 --
 ALTER TABLE `medical_assistance`
-  MODIFY `medical_team_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `medical_team_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `route`
 --
 ALTER TABLE `route`
-  MODIFY `route_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `route_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `team_lead`
 --
 ALTER TABLE `team_lead`
-  MODIFY `team_leader_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `team_leader_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

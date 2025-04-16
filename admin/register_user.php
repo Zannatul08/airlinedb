@@ -1,9 +1,11 @@
 <?php
 session_start();
 require_once '../db_connection.php';
+
 // Get the database connection instance
 $db = Database::getInstance();
 $conn = $db->getConnection();
+
 
 require_once 'PassportProxy.php';
 $passportProxy = new PassportProxy($conn);
@@ -84,9 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text" name="passport_number" id="passport_number" required
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
             </div>
-
-
-
 
             <button type="submit"
                 class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out">
